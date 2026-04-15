@@ -1,13 +1,43 @@
-from flask import Flask
+from flask import Flask, request, render_template_string
 import os
 
 app = Flask(__name__)
 
-@app.route('/')
-def hello():
-    return "<h1>Success!</h1><p>OpenShift is running my Python app.</p>"
+# This is the path where we will mount our Persistent Volume
+DATA_FILE = "/var/data/storage.txt"
+
+# Ensure the directory exists (to avoid errors during local testing)
+os.makedirs(os.path.dirname(DATA_FILE), exist_ok=True)
+
+HTML_TEMPLATE = """
+<html>
+    <body>
+        <h1>OpenShift PV Logger</h1>
+        <form method="POST">
+            <input type="text" name="user_data" placeholder="Enter something to save..." required>
+            <button type="submit">Save to PV</button>
+        </form>
+        <h3>Saved Data:</h3>
+        <pre>{{ saved_content }}</pre>
+    </body>
+</html>
+"""
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        user_input = request.form.get('user_data')
+        # Append data to the file in the PV
+        with open(DATA_FILE, "a") as f:
+            f.write(user_input + "\\n")
+            
+    # Read the data back to show it works
+    content = ""
+    if os.path.exists(DATA_FILE):
+        with open(DATA_FILE, "r") as f:
+            content = f.read()
+            
+    return render_template_string(HTML_TEMPLATE, saved_content=content)
 
 if __name__ == "__main__":
-    # OpenShift expects the app to listen on 0.0.0.0 and port 8080
-    port = int(os.environ.get("PORT", 8080))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=8080)
