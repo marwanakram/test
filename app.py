@@ -1,9 +1,13 @@
-import webbrowser
+from flask import Flask
+import os
 
-# Define the URL
-url = "https://www.google.com"
+app = Flask(__name__)
 
-# Open the URL in the default web browser
-webbrowser.open(url)
+@app.route('/')
+def hello():
+    return "<h1>Success!</h1><p>OpenShift is running my Python app.</p>"
 
-print("Opening Google in your default browser...")
+if __name__ == "__main__":
+    # OpenShift expects the app to listen on 0.0.0.0 and port 8080
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host='0.0.0.0', port=port)
