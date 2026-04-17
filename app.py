@@ -17,7 +17,7 @@ HTML_TEMPLATE = """
             <input type="text" name="user_data" placeholder="Enter something to save ya a7a..." required>
             <button type="submit">Save to PV</button>
         </form>
-        <h3>Saved Data:</h3>
+        <h3>Saved Data zeb:</h3>
         <pre>{{ saved_content }}</pre>
     </body>
 </html>
