@@ -29,7 +29,7 @@ def index():
         user_input = request.form.get('user_data')
         # Append data to the file in the PV
         with open(DATA_FILE, "a") as f:
-            f.write(user_input + "\\n")
+            f.write(user_input )
             
     # Read the data back to show it works
     content = ""
