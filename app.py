@@ -14,7 +14,7 @@ HTML_TEMPLATE = """
     <body>
         <h1>OpenShift PV Logger</h1>
         <form method="POST">
-            <input type="text" name="user_data" placeholder="Enter something to save..." required>
+            <input type="text" name="user_data" placeholder="Enter something to save ya a7a..." required>
             <button type="submit">Save to PV</button>
         </form>
         <h3>Saved Data:</h3>
